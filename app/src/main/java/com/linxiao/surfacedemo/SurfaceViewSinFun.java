@@ -37,7 +37,7 @@ public class SurfaceViewSinFun extends SurfaceView implements SurfaceHolder.Call
     super(context, attrs, defStyleAttr);
 
     mPaint = new Paint();
-    mPaint.setColor(Color.BLACK);
+    mPaint.setColor(Color.GREEN);
     mPaint.setStyle(Paint.Style.STROKE);
     mPaint.setAntiAlias(true);
     mPaint.setStrokeWidth(5);
@@ -87,18 +87,27 @@ public class SurfaceViewSinFun extends SurfaceView implements SurfaceHolder.Call
     try {
       //获得canvas对象
       mCanvas = mSurfaceHolder.lockCanvas();
+      //通过下面的验证，发现surfaceHolder中持有的缓存不一定是2个，有时候也会是3个。
+      //另外，num比较小的时候是测试不出来的，因为activity初始化需要一定的时候，num==0的时候，数据并没有写入到canvas中
+      if (num == 10) {
+        mCanvas.drawColor(Color.YELLOW);
+      } else if (num == 11) {
+        mCanvas.drawColor(Color.RED);
+      } else if (num == 12) {
+        mCanvas.drawColor(0xFFFF00FF);
+      }
       //通过下面的测试，证明canvas中是保留上次绘制的内容的
       if (num > 100 & num < 300) {
         mCanvas.drawCircle(200, 200, 100, mTempPaint);
-      }else{
+      } else {
         //绘制背景
-        mCanvas.drawColor(Color.RED);
+//        mCanvas.drawColor(Color.RED);
       }
       //绘制路径
       mCanvas.drawPath(mPath, mPaint);
       num++;
     } catch (Exception e) {
-
+      e.printStackTrace();
     } finally {
       if (mCanvas != null) {
         //释放canvas对象并提交画布
