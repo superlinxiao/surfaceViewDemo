@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -13,6 +14,31 @@ import android.view.SurfaceView;
  * Description
  * Author lizheng
  * Create Data  2018\8\2 0002
+ * <p>
+ * <p>
+ * 1、程序打开
+ * Activity 调用顺序:onCreate()->onStart()->onResume()
+ * SurfaceView 调用顺序: surfaceCreated()->surfaceChanged()
+ * <p>
+ * 2、程序关闭（按 BACK 键）
+ * Activity 调用顺序:onPause()->onStop()->onDestory()
+ * SurfaceView 调用顺序: surfaceDestroyed()
+ * <p>
+ * 3、程序切到后台（按 HOME 键）
+ * Activity 调用顺序:onPause()->onStop()
+ * SurfaceView 调用顺序: surfaceDestroyed()
+ * <p>
+ * 4、程序切到前台
+ * Activity 调用顺序: onRestart()->onStart()->onResume()
+ * SurfaceView 调用顺序: surfaceChanged()->surfaceCreated()
+ * <p>
+ * 5、屏幕锁定（挂断键或锁定屏幕）
+ * Activity 调用顺序: onPause()
+ * SurfaceView 什么方法都不调用
+ * <p>
+ * 6、屏幕解锁
+ * Activity 调用顺序: onResume()
+ * SurfaceView 什么方法都不调用
  */
 public class SurfaceViewSinFun extends SurfaceView implements SurfaceHolder.Callback, Runnable {
   private SurfaceHolder mSurfaceHolder;
@@ -24,6 +50,8 @@ public class SurfaceViewSinFun extends SurfaceView implements SurfaceHolder.Call
   private Paint mPaint;
   private Path mPath;
   private Paint mTempPaint;
+
+  private static final String TAG = "SurfaceViewSinFun";
 
   public SurfaceViewSinFun(Context context) {
     this(context, null);
@@ -56,18 +84,20 @@ public class SurfaceViewSinFun extends SurfaceView implements SurfaceHolder.Call
 
   @Override
   public void surfaceCreated(SurfaceHolder holder) {
+    Log.i(TAG, "surfaceCreate");
     mIsDrawing = true;
     new Thread(this).start();
   }
 
   @Override
   public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+    Log.i(TAG, "surfaceChanged");
   }
 
   @Override
   public void surfaceDestroyed(SurfaceHolder holder) {
     mIsDrawing = false;
+    Log.i(TAG, "surfaceDestroyed");
   }
 
   @Override
