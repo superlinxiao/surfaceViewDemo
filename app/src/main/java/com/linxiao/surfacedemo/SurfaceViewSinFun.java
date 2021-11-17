@@ -119,6 +119,7 @@ public class SurfaceViewSinFun extends SurfaceView implements SurfaceHolder.Call
       mCanvas = mSurfaceHolder.lockCanvas();
       //通过下面的验证，发现surfaceHolder中持有的缓存不一定是2个，有时候也会是3个。
       //另外，num比较小的时候是测试不出来的，因为activity初始化需要一定的时候，num==0的时候，数据并没有写入到canvas中
+      //21.11.17 结论待定
       if (num == 10) {
         mCanvas.drawColor(Color.YELLOW);
       } else if (num == 11) {
@@ -128,7 +129,7 @@ public class SurfaceViewSinFun extends SurfaceView implements SurfaceHolder.Call
       }
       //通过下面的测试，证明canvas中是保留上次绘制的内容的
       if (num > 100 & num < 300) {
-        mCanvas.drawCircle(200, 200, 100, mTempPaint);
+//        mCanvas.drawCircle(200, 200, 100, mTempPaint);
       } else {
         //绘制背景
 //        mCanvas.drawColor(Color.RED);
